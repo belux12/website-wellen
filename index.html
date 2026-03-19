@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wellen physikalisch erklärt</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(102, 166, 255, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(47, 111, 237, 0.14), transparent 24%),
+        linear-gradient(180deg, #eef4ff 0%, #f8fbff 45%, #eef5ff 100%);
+      color: #1f2a44;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2457d6 0%, #4f8dff 55%, #75b4ff 100%);
+      color: white;
+      padding: 56px 24px 62px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(36, 87, 214, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -60px -10%;
+      height: 120px;
+      background: rgba(255,255,255,0.18);
+      filter: blur(30px);
+    }
+
+    main {
+      max-width: 1150px;
+      margin: auto;
+      padding: 26px 18px 38px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-radius: 22px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 12px 32px rgba(31, 42, 68, 0.08);
+      border: 1px solid rgba(118, 156, 255, 0.16);
+    }
+
+    h2 {
+      color: #1e469e;
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.7rem;
+    }
+
+    .formula {
+      background: linear-gradient(135deg, #eef4ff, #dfeaff);
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: bold;
+      margin: 12px 0;
+      text-align: center;
+      border: 1px solid #d0defe;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    canvas {
+      width: 100%;
+      background: linear-gradient(180deg, #ffffff, #f9fbff);
+      border-radius: 16px;
+      display: block;
+      margin-bottom: 16px;
+      border: 1px solid #d9e4ff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    input {
+      width: 100%;
+      margin-bottom: 14px;
+      accent-color: #2f6fed;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      color: #1f3f87;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .intro-grid,
+    .effect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .mini-card {
+      background: linear-gradient(180deg, #f8fbff, #eef4ff);
+      border: 1px solid #d7e3ff;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      color: #22408a;
+      font-size: 1.15rem;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5b78bf;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #edf4ff, #e6f0ff);
+      border-left: 5px solid #2f6fed;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        padding: 42px 16px 48px;
+      }
+
+      header h1 {
+        font-size: 2.5rem !important;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      h2 {
+        font-size: 1.45rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 style="font-size:3.4rem; margin:0;">Wellen physikalisch erklärt</h1>
+</header>
+
+<main>
+  <div class="intro-grid">
+    <div class="mini-card">
+      <div class="section-title">Grundidee</div>
+      <h3>Energie statt Materie</h3>
+      <p>Wellen transportieren Energie, ohne dass Materie insgesamt mitwandert.</p>
+    </div>
+    <div class="mini-card">
+      <div class="section-title">Merksatz</div>
+      <h3>Was ist wichtig?</h3>
+      <p>Amplitude beschreibt die Auslenkung, Frequenz die Schnelligkeit und Wellenlänge den Abstand gleicher Punkte.</p>
+    </div>
+    <div class="mini-card">
+      <div class="section-title">Beobachtung</div>
+      <h3>Im Alltag sichtbar</h3>
+      <p>Wellen begegnen uns bei Licht, Schall, Wasser und vielen technischen Anwendungen.</p>
+    </div>
+  </div>
+
+<div class="card">
+  <h2>Was ist eine Welle?</h2>
+  <p>
+    Eine Welle ist die Ausbreitung einer Schwingung im Raum. Dabei wird Energie transportiert,
+    aber keine Materie dauerhaft verschoben. Ein einzelnes Teilchen schwingt nur um seine Ruhelage.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Wichtige Begriffe (genauer erklärt)</h2>
+
+  <p><strong>Amplitude (A):</strong><br>
+  Die maximale Auslenkung eines Teilchens aus der Ruhelage. Große Amplitude = viel Energie.
+  </p>
+
+  <p><strong>Frequenz (f):</strong><br>
+  Anzahl der Schwingungen pro Sekunde. Einheit: Hertz (Hz). Hohe Frequenz = schnelle Schwingung.
+  </p>
+
+  <p><strong>Periodendauer (T):</strong><br>
+  Zeit für eine vollständige Schwingung. Einheit: Sekunden.
+  </p>
+
+  <p><strong>Wellenlänge (λ):</strong><br>
+  Abstand zwischen zwei gleichen Punkten (z.B. zwei Wellenbergen).
+  </p>
+
+  <p><strong>Ausbreitungsgeschwindigkeit (c):</strong><br>
+  Geschwindigkeit, mit der sich die Welle fortbewegt (z.B. Schall ~343 m/s).
+  </p>
+</div>
+
+<div class="card">
+  <h2>Transversal vs Longitudinal</h2>
+
+  <p><strong>Was ist ein Medium?</strong><br>
+  Ein Medium ist der Stoff oder Raum, in dem sich eine Welle ausbreitet. Bei Schall ist das Medium zum Beispiel Luft, Wasser oder ein fester Körper. Bei Wasserwellen ist Wasser das Medium. Mechanische Wellen brauchen immer ein Medium, weil dort Teilchen schwingen müssen. Licht ist besonders, denn als elektromagnetische Welle braucht es kein materielles Medium.
+  </p>
+
+  <p><strong>Transversalwellen:</strong><br>
+  Die Schwingung erfolgt senkrecht zur Ausbreitungsrichtung. Das bedeutet: Die Welle läuft zum Beispiel nach rechts, aber die Teilchen bewegen sich nach oben und unten. Ein typisches Modell ist eine Schwingung auf einem gespannten Seil. Auch Licht wird als Transversalwelle beschrieben.
+  </p>
+
+  <p><strong>Longitudinalwellen:</strong><br>
+  Die Schwingung erfolgt in Ausbreitungsrichtung. Das bedeutet: Die Teilchen schwingen nach vorne und hinten, also in dieselbe Richtung, in die sich die Welle ausbreitet. Bei Schall entstehen dabei Verdichtungen und Verdünnungen des Mediums.
+  </p>
+</div>
+
+<div class="card">
+    <h2>Wichtige Welleneffekte</h2>
+    <div class="effect-grid">
+      <div class="mini-card">
+        <h3>Reflexion</h3>
+        <p>Eine Welle wird an einer Grenze oder an einem Hindernis zurückgeworfen. Ein Beispiel ist das Echo.</p>
+      </div>
+      <div class="mini-card">
+        <h3>Brechung</h3>
+        <p>Eine Welle ändert ihre Richtung, wenn sich ihre Geschwindigkeit beim Übergang in einen anderen Bereich verändert.</p>
+      </div>
+      <div class="mini-card">
+        <h3>Beugung</h3>
+        <p>Wellen breiten sich hinter Kanten oder engen Öffnungen weiter aus und gelangen dadurch auch in Schattenbereiche.</p>
+      </div>
+      <div class="mini-card">
+        <h3>Interferenz</h3>
+        <p>Zwei oder mehr Wellen überlagern sich. Dadurch können sie sich verstärken oder abschwächen.</p>
+      </div>
+    </div>
+    <div class="highlight-box">
+      Gerade diese Effekte zeigen besonders deutlich, dass Wellen sich anders verhalten als einzelne Teilchen.
+    </div>
+  </div>
+
+<div class="card">
+  <h2>Formeln</h2>
+
+  <div class="formula">c = λ · f</div>
+  <p>
+    Diese Formel verbindet die <strong>Ausbreitungsgeschwindigkeit c</strong> mit der
+    <strong>Wellenlänge λ</strong> und der <strong>Frequenz f</strong>. Sie bedeutet:
+    Wenn eine Welle pro Sekunde oft schwingt und gleichzeitig eine große Wellenlänge hat,
+    dann breitet sie sich schnell aus.
+  </p>
+
+  <div class="formula">T = 1 / f</div>
+  <p>
+    Die <strong>Periodendauer T</strong> gibt an, wie lange eine vollständige Schwingung dauert.
+    Diese Formel zeigt: Je größer die Frequenz ist, desto kleiner ist die Periodendauer.
+    Eine schnell schwingende Welle braucht also weniger Zeit für eine ganze Schwingung.
+  </p>
+
+  <div class="formula">f = 1 / T</div>
+  <p>
+    Das ist die Umkehrung der Formel für die Periodendauer. Kennt man die Zeit für eine Schwingung,
+    kann man daraus berechnen, wie viele Schwingungen pro Sekunde stattfinden.
+  </p>
+
+  <div class="formula">y(x,t) = A · sin(2π(x/λ - f·t))</div>
+  <p>
+    Das ist eine allgemeine <strong>Wellengleichung</strong>. Sie beschreibt die Auslenkung
+    <strong>y</strong> an einem Ort <strong>x</strong> zu einem Zeitpunkt <strong>t</strong>.
+    Dabei steht <strong>A</strong> für die Amplitude, <strong>λ</strong> für die Wellenlänge
+    und <strong>f</strong> für die Frequenz. Mit dieser Gleichung kann man mathematisch genau
+    beschreiben, wie sich eine Welle bewegt.
+  </p>
+</div>
+
+<div class="card">
+    <div class="section-title">Simulation 1</div>
+    <h2>Interaktive Welle</h2>
+  <p>
+    Hier kannst du beobachten, wie sich die Form der Welle verändert. Unter den Reglern siehst du
+    die exakten aktuellen Werte.
+  </p>
+
+  <canvas id="c" width="800" height="300"></canvas>
+
+  <label>Amplitude: <span id="aVal">40</span></label>
+  <input type="range" id="a" min="10" max="100" value="40">
+
+  <label>Frequenz: <span id="fVal">2.0</span> Hz</label>
+  <input type="range" id="f" min="1" max="6" step="0.1" value="2">
+
+  <label>Wellenlänge: <span id="lVal">140</span></label>
+  <input type="range" id="l" min="60" max="260" value="140">
+
+  <div class="formula" style="text-align:left; font-size:1rem; font-weight:normal;">
+    <strong>Genaue aktuelle Werte:</strong><br>
+    Amplitude A = <span id="aOut">40</span><br>
+    Frequenz f = <span id="fOut">2.0</span> Hz<br>
+    Periodendauer T = <span id="tOut">0.50</span> s<br>
+    Wellenlänge λ = <span id="lOut">140</span><br>
+    Ausbreitungsgeschwindigkeit c = <span id="cOut">280.0</span>
+  </div>
+</div>
+
+<div class="card">
+    <div class="section-title">Simulation 2</div>
+    <h2>Simulation zur Interferenz</h2>
+  <p>
+    Hier siehst du zwei Wellen, die sich überlagern. Die graue Kurve ist Welle 1, die hellblaue Kurve ist Welle 2,
+    und die dunkelblaue Kurve zeigt ihre Summe. So kannst du konstruktive und destruktive Interferenz direkt erkennen.
+  </p>
+
+  <canvas id="interferenceCanvas" width="800" height="320"></canvas>
+
+  <label>Amplitude Welle 1: <span id="iA1Val">35</span></label>
+  <input type="range" id="iA1" min="10" max="80" value="35">
+
+  <label>Amplitude Welle 2: <span id="iA2Val">35</span></label>
+  <input type="range" id="iA2" min="10" max="80" value="35">
+
+  <label>Phasenverschiebung: <span id="iPhaseVal">0</span>°</label>
+  <input type="range" id="iPhase" min="0" max="360" value="0">
+
+  <label>Wellenlänge: <span id="iLambdaVal">160</span></label>
+  <input type="range" id="iLambda" min="80" max="260" value="160">
+
+  <div class="formula" style="text-align:left; font-size:1rem; font-weight:normal;">
+    <strong>Beobachtung:</strong><br>
+    <span id="interferenceText">Bei gleicher Phase verstärken sich die beiden Wellen maximal.</span>
+  </div>
+</div>
+
+</main>
+
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+
+const a = document.getElementById('a');
+const f = document.getElementById('f');
+const l = document.getElementById('l');
+
+const aVal = document.getElementById('aVal');
+const fVal = document.getElementById('fVal');
+const lVal = document.getElementById('lVal');
+
+const aOut = document.getElementById('aOut');
+const fOut = document.getElementById('fOut');
+const tOut = document.getElementById('tOut');
+const lOut = document.getElementById('lOut');
+const cOut = document.getElementById('cOut');
+
+const interferenceCanvas = document.getElementById('interferenceCanvas');
+const ictx = interferenceCanvas.getContext('2d');
+const iA1 = document.getElementById('iA1');
+const iA2 = document.getElementById('iA2');
+const iPhase = document.getElementById('iPhase');
+const iLambda = document.getElementById('iLambda');
+const iA1Val = document.getElementById('iA1Val');
+const iA2Val = document.getElementById('iA2Val');
+const iPhaseVal = document.getElementById('iPhaseVal');
+const iLambdaVal = document.getElementById('iLambdaVal');
+const interferenceText = document.getElementById('interferenceText');
+
+let phase = 0;
+let amp = Number(a.value);
+let freq = Number(f.value);
+let lambda = Number(l.value);
+let iAnim = 0;
+
+function updateValues() {
+  amp = Number(a.value);
+  freq = Number(f.value);
+  lambda = Number(l.value);
+  const T = 1 / freq;
+  const speed = lambda * freq;
+
+  aVal.textContent = amp.toFixed(0);
+  fVal.textContent = freq.toFixed(1);
+  lVal.textContent = lambda.toFixed(0);
+
+  aOut.textContent = amp.toFixed(0);
+  fOut.textContent = freq.toFixed(1);
+  tOut.textContent = T.toFixed(2);
+  lOut.textContent = lambda.toFixed(0);
+  cOut.textContent = speed.toFixed(1);
+}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  let center = c.height/2;
+
+  ctx.strokeStyle = '#c7d8ff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, center);
+  ctx.lineTo(c.width, center);
+  ctx.stroke();
+
+  ctx.strokeStyle = '#2f6fed';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for(let x=0;x<=c.width;x++){
+    let y = center + amp*Math.sin((2*Math.PI*x)/lambda + phase);
+    if(x===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+
+  phase += 0.05*freq;
+  requestAnimationFrame(draw);
+}
+
+function updateInterferenceValues() {
+  const phaseDeg = Number(iPhase.value);
+  iA1Val.textContent = iA1.value;
+  iA2Val.textContent = iA2.value;
+  iPhaseVal.textContent = phaseDeg;
+  iLambdaVal.textContent = iLambda.value;
+
+  const phaseNorm = ((phaseDeg % 360) + 360) % 360;
+  if (phaseNorm < 20 || phaseNorm > 340) {
+    interferenceText.textContent = 'Die Phasen sind fast gleich. Es entsteht fast maximale konstruktive Interferenz.';
+  } else if (Math.abs(phaseNorm - 180) < 20) {
+    interferenceText.textContent = 'Die Phasen sind fast entgegengesetzt. Es entsteht starke destruktive Interferenz.';
+  } else {
+    interferenceText.textContent = 'Die Wellen überlagern sich teilweise. Es entsteht eine gemischte Interferenz.';
+  }
+}
+
+function drawInterference() {
+  ictx.clearRect(0, 0, interferenceCanvas.width, interferenceCanvas.height);
+  const center = interferenceCanvas.height / 2;
+  const A1 = Number(iA1.value);
+  const A2 = Number(iA2.value);
+  const L = Number(iLambda.value);
+  const phaseShift = Number(iPhase.value) * Math.PI / 180;
+
+  ictx.strokeStyle = '#d8deeb';
+  ictx.lineWidth = 2;
+  ictx.beginPath();
+  ictx.moveTo(0, center);
+  ictx.lineTo(interferenceCanvas.width, center);
+  ictx.stroke();
+
+  ictx.strokeStyle = '#9aa7bd';
+  ictx.lineWidth = 2;
+  ictx.beginPath();
+
+  for (let x = 0; x <= interferenceCanvas.width; x++) {
+    const y1 = center + A1 * Math.sin((2 * Math.PI * x) / L + iAnim);
+    if (x === 0) ictx.moveTo(x, y1); else ictx.lineTo(x, y1);
+  }
+  ictx.stroke();
+
+  ictx.strokeStyle = '#8fd0ff';
+  ictx.lineWidth = 2;
+  ictx.beginPath();
+  for (let x = 0; x <= interferenceCanvas.width; x++) {
+    const y2 = center + A2 * Math.sin((2 * Math.PI * x) / L + iAnim + phaseShift);
+    if (x === 0) ictx.moveTo(x, y2); else ictx.lineTo(x, y2);
+  }
+  ictx.stroke();
+
+  ictx.strokeStyle = '#2f6fed';
+  ictx.lineWidth = 3;
+  ictx.beginPath();
+  for (let x = 0; x <= interferenceCanvas.width; x++) {
+    const wave1 = A1 * Math.sin((2 * Math.PI * x) / L + iAnim);
+    const wave2 = A2 * Math.sin((2 * Math.PI * x) / L + iAnim + phaseShift);
+    const sum = center + wave1 + wave2;
+    if (x === 0) ictx.moveTo(x, sum); else ictx.lineTo(x, sum);
+  }
+  ictx.stroke();
+
+  iAnim += 0.04;
+  requestAnimationFrame(drawInterference);
+}
+
+a.addEventListener('input', updateValues);
+f.addEventListener('input', updateValues);
+l.addEventListener('input', updateValues);
+iA1.addEventListener('input', updateInterferenceValues);
+iA2.addEventListener('input', updateInterferenceValues);
+iPhase.addEventListener('input', updateInterferenceValues);
+iLambda.addEventListener('input', updateInterferenceValues);
+
+updateValues();
+updateInterferenceValues();
+draw();
+drawInterference();
+</script>
+
+</body>
+</html>
